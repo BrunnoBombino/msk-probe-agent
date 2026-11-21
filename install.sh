@@ -74,5 +74,23 @@ systemctl restart probe-agent
 sleep 1
 echo "==> Verifying /healthz..."
 curl -fsS http://127.0.0.1:8090/healthz
+# Считываем актуальный токен из .env (и при первом запуске, и при обновлении)
+CURRENT_TOKEN=$(grep -oP '^PROBE_TOKEN=\K.*' "${ENV_FILE}" || true)
+SERVER_IP=$(curl -fsS -4 ifconfig.me 2>/dev/null || hostname -I | awk '{print $1}')
+
+echo ""
+echo "============================================================"
+echo "Переменные для .env бэкенда:"
+echo "------------------------------------------------------------"
+echo "# Вариант 1: локально через SSH-туннель (ssh -N -L 18090:127.0.0.1:8090 root@${SERVER_IP})"
+echo "MSK_PROBE_URL=http://127.0.0.1:18090"
+echo "MSK_PROBE_TOKEN=${CURRENT_TOKEN}"
+echo "MSK_PROBE_TIMEOUT_MS=3000"
+echo ""
+echo "# Вариант 2: после настройки HTTPS reverse-proxy (Nginx/Caddy) на МСК-сервере"
+echo "# MSK_PROBE_URL=https://probe.ваш-домен"
+echo "# MSK_PROBE_TOKEN=${CURRENT_TOKEN}"
+echo "# MSK_PROBE_TIMEOUT_MS=3000"
+echo "============================================================"
 echo ""
 echo "==> Done."
