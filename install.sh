@@ -6,7 +6,7 @@ ENV_FILE="${APP_DIR}/.env"
 SERVICE_FILE="/etc/systemd/system/probe-agent.service"
 
 # Замени на свой репозиторий и ветку (или передай REPO_RAW_BASE при запуске)
-REPO_RAW_BASE="${REPO_RAW_BASE:-https://raw.githubusercontent.com/<YOUR_GITHUB_USER>/msk-probe-agent/main}"
+REPO_RAW_BASE="${REPO_RAW_BASE:-https://raw.githubusercontent.com/BrunnoBombino/msk-probe-agent/main}"
 
 echo "==> [1/5] Installing system packages..."
 export DEBIAN_FRONTEND=noninteractive
